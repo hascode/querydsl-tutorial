@@ -19,6 +19,13 @@ public class Author {
 	@OneToMany
 	private final List<Book> books = new ArrayList<>();
 
+	public Author() {
+	}
+
+	public Author(final String name) {
+		this.name = name;
+	}
+
 	public final Long getId() {
 		return id;
 	}
@@ -37,6 +44,14 @@ public class Author {
 
 	public final List<Book> getBooks() {
 		return books;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Author [id=").append(id).append(", name=").append(name)
+				.append("]");
+		return builder.toString();
 	}
 
 }

@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -23,6 +25,7 @@ public class Book {
 	@Temporal(TemporalType.DATE)
 	private Date published;
 
+	@OneToMany(cascade = CascadeType.ALL)
 	private final List<Tag> tags = new ArrayList<>();
 
 	public final Long getId() {
@@ -59,5 +62,18 @@ public class Book {
 
 	public final List<Tag> getTags() {
 		return tags;
+	}
+
+	public void addTag(final Tag tag) {
+		this.tags.add(tag);
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Book [id=").append(id).append(", title=").append(title)
+				.append(", author=").append(author).append(", published=")
+				.append(published).append(", tags=").append(tags).append("]");
+		return builder.toString();
 	}
 }
