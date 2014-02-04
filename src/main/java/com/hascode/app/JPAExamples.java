@@ -5,6 +5,9 @@ import java.util.Calendar;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import com.hascode.entity.Author;
 import com.hascode.entity.Book;
@@ -12,7 +15,7 @@ import com.hascode.entity.QBook;
 import com.hascode.entity.Tag;
 import com.mysema.query.jpa.impl.JPAQuery;
 
-public class Main {
+public class JPAExamples {
 	public void run() {
 		EntityManager em = Persistence.createEntityManagerFactory("default")
 				.createEntityManager();
@@ -45,19 +48,39 @@ public class Main {
 		em.persist(b1);
 		em.persist(b2);
 
+		// Using Querydsl
 		JPAQuery query = new JPAQuery(em);
 		QBook book = QBook.book;
-		Book b = query
+		Book bookFound1 = query
 				.from(book)
 				.where(book.title.startsWith("The"),
 						book.published.after(cal1.getTime()),
 						book.author.name.eq("Some Guy"),
 						book.tags.contains(horrorTag)).uniqueResult(book);
-		System.out.println(b.toString());
+		System.out.println(bookFound1.toString());
+
+		// Using JPA Criteria API
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<Book> cq = cb.createQuery(Book.class);
+		Root<Book> bk = cq.from(Book.class);
+		cq.select(bk);
+		cq.where(cb.like(bk.get("title").as(String.class), "The%"));
+		Book bookFound2 = em.createQuery(cq).getSingleResult();
+		System.out.println(bookFound2.toString());
+
+		// Using JPA Query Language
+		Book bookFound3 = em
+				.createQuery(
+						"SELECT book FROM Book book WHERE book.title LIKE 'The%' AND book.published>:published AND book.author.name=:author AND :tag MEMBER OF book.tags",
+						Book.class).setParameter("published", cal1.getTime())
+				.setParameter("author", "Some Guy")
+				.setParameter("tag", new Tag("Horror")).getSingleResult();
+		System.out.println(bookFound3.toString());
+		tx.rollback();
 
 	}
 
 	public static void main(final String[] args) {
-		new Main().run();
+		new JPAExamples().run();
 	}
 }
