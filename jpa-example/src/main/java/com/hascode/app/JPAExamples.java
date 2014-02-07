@@ -33,13 +33,14 @@ public class JPAExamples {
 		Author author = new Author("Some Guy");
 		em.persist(author);
 
+		Tag horrorTag = new Tag("Horror");
+		Tag dramaTag = new Tag("Drama");
+		Tag scienceTag = new Tag("Science");
+
 		Book b1 = new Book();
 		b1.setTitle("The big book of something");
 		b1.setAuthor(author);
 		b1.setPublished(cal2.getTime());
-		Tag horrorTag = new Tag("Horror");
-		Tag dramaTag = new Tag("Drama");
-		Tag scienceTag = new Tag("Science");
 		b1.addTag(horrorTag);
 		b1.addTag(dramaTag);
 		b1.addTag(scienceTag);
@@ -48,8 +49,15 @@ public class JPAExamples {
 		b2.setTitle("Another book");
 		b2.setAuthor(author);
 
+		Book b3 = new Book();
+		b3.setTitle("The other book of something");
+		b3.setAuthor(author);
+		b3.setPublished(cal2.getTime());
+		b3.addTag(dramaTag);
+
 		em.persist(b1);
 		em.persist(b2);
+		em.persist(b3);
 
 		// Using Querydsl
 		JPAQuery query = new JPAQuery(em);
