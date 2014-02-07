@@ -22,6 +22,13 @@ Run the MongoDB examples using the following command:
     mvn package && cd mongodb-example && mvn -Dexec.mainClass=com.hascode.app.MongoDbExamples exec:java
 
 
+## Lucene
+
+Run the Lucene examples using the following command:
+
+    mvn package && cd lucene-example && mvn -Dexec.mainClass=com.hascode.app.LuceneExamples exec:java
+
+
 Please feel free to have a look at my blog at [www.hascode.com] for sources and additional information.
 
 ----

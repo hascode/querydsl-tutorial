@@ -9,6 +9,7 @@
 	<modules>
 		<module>jpa-example</module>
 		<module>mongodb-example</module>
+		<module>lucene-example</module>
 	</modules>
 
 	<url>http://www.hascode.com/</url>
