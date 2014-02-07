@@ -15,6 +15,7 @@
 
 	<properties>
 		<querydsl.version>3.3.0</querydsl.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
 	<dependencies>
@@ -27,7 +28,7 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.6.1</version>
+			<version>1.7.6</version>
 		</dependency>
 	</dependencies>
 

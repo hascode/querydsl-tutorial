@@ -1,4 +1,4 @@
-# Querydsl JPA Tutorial
+# Querydsl Tutorial
 
 Examples showing how to create complex queries for JPA or MongoDB using [Querydsl].
 
@@ -6,7 +6,7 @@ Examples showing how to create complex queries for JPA or MongoDB using [Queryds
 
 Run the JPA examples using the following command:
 
-    mvn package && cd jpa-example && mvn -Dexec.mainClass=com.hascode.app.JPAExamples exec:java 
+    mvn package && cd jpa-example && mvn -Dexec.mainClass=com.hascode.app.JPAExamples exec:java
 
 This should produce a similar output:
 
@@ -15,9 +15,11 @@ This should produce a similar output:
     Book [id=2, title=The big book of something, author=Author [id=1, name=Some Guy], published=Fri Dec 31 22:43:42 CET 2010, tags=[Tag [name=Horror], Tag [name=Drama], Tag [name=Science]]]
 
 
-## MongoDB
+## MongoDB with Morphia
 
-_to be done_
+Run the MongoDB examples using the following command:
+
+    mvn package && cd mongodb-example && mvn -Dexec.mainClass=com.hascode.app.MongoDbExamples exec:java
 
 
 Please feel free to have a look at my blog at [www.hascode.com] for sources and additional information.
