@@ -1,12 +1,15 @@
 package com.hascode.app;
 
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Root;
 
 import com.hascode.entity.Author;
@@ -56,26 +59,36 @@ public class JPAExamples {
 				.where(book.title.startsWith("The"),
 						book.published.after(cal1.getTime()),
 						book.author.name.eq("Some Guy"),
-						book.tags.contains(horrorTag)).uniqueResult(book);
-		System.out.println(bookFound1.toString());
+						book.tags.contains(horrorTag))
+				.orderBy(book.title.asc()).uniqueResult(book);
+		System.out.println("Using Querydsl:\t\t\t" + bookFound1.toString());
 
 		// Using JPA Criteria API
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Book> cq = cb.createQuery(Book.class);
 		Root<Book> bk = cq.from(Book.class);
 		cq.select(bk);
-		cq.where(cb.like(bk.get("title").as(String.class), "The%"));
+		Expression<List<Tag>> tags = bk.get("tags");
+		cq.where(cb.like(bk.get("title").as(String.class), "The%"),
+				cb.greaterThan(bk.get("published").as(Date.class),
+						cal1.getTime()), cb.equal(bk.get("author").get("name")
+						.as(String.class), "Some Guy"), cb.isMember(horrorTag,
+						tags));
+
+		cq.orderBy(cb.asc(bk.get("title")));
 		Book bookFound2 = em.createQuery(cq).getSingleResult();
-		System.out.println(bookFound2.toString());
+		System.out.println("Using JPA Criteria API:\t\t"
+				+ bookFound2.toString());
 
 		// Using JPA Query Language
 		Book bookFound3 = em
 				.createQuery(
-						"SELECT book FROM Book book WHERE book.title LIKE 'The%' AND book.published>:published AND book.author.name=:author AND :tag MEMBER OF book.tags",
+						"SELECT book FROM Book book WHERE book.title LIKE 'The%' AND book.published>:published AND book.author.name=:author AND :tag MEMBER OF book.tags ORDER BY book.title ASC",
 						Book.class).setParameter("published", cal1.getTime())
 				.setParameter("author", "Some Guy")
 				.setParameter("tag", new Tag("Horror")).getSingleResult();
-		System.out.println(bookFound3.toString());
+		System.out.println("Using JPA Query Language:\t"
+				+ bookFound3.toString());
 		tx.rollback();
 
 	}

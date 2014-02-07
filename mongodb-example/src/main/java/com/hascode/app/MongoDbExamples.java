@@ -3,6 +3,7 @@ package com.hascode.app;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.Calendar;
+import java.util.List;
 
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
@@ -59,16 +60,23 @@ public class MongoDbExamples {
 		b2.setTitle("Another book");
 		b2.setAuthor(author);
 
+		Book b3 = new Book();
+		b3.setTitle("The other book of something");
+		b3.setAuthor(author);
+		b3.setPublished(cal2.getTime());
+		b3.addTag(dramaTag);
+
 		ds.save(b1);
 		ds.save(b2);
 
 		QBook book = QBook.book;
 		MorphiaQuery<Book> query = new MorphiaQuery<Book>(morphia, ds, book);
-		Book bookFound = query
-				.where(book.title.startsWith("The"),
-						book.published.after(cal1.getTime()),
-						book.author.name.eq("Some guy"),
-						book.tags.contains(horrorTag)).list().get(0);
-		System.out.println(bookFound.toString());
+		List<Book> books = query.where(book.title.startsWith("The"),
+				book.published.after(cal1.getTime()),
+				book.author.name.eq("Some guy"), book.tags.contains(horrorTag))
+				.list();
+		for (Book bookFound : books) {
+			System.out.println(bookFound.toString());
+		}
 	}
 }
