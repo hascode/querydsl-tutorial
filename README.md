@@ -10,7 +10,7 @@ Run the JPA examples using the following command:
 
 This should produce a similar output:
 
-    Using Querydsl:			Book [id=2, title=The big book of something, author=Author [id=1, name=Some Guy], published=Fri Dec 31 16:55:00 CET 2010, tags=[Tag [name=Horror], Tag [name=Drama], Tag [name=Science]]]
+    Using Querydsl:				Book [id=2, title=The big book of something, author=Author [id=1, name=Some Guy], published=Fri Dec 31 16:55:00 CET 2010, tags=[Tag [name=Horror], Tag [name=Drama], Tag [name=Science]]]
     Using JPA Criteria API:		Book [id=2, title=The big book of something, author=Author [id=1, name=Some Guy], published=Fri Dec 31 16:55:00 CET 2010, tags=[Tag [name=Horror], Tag [name=Drama], Tag [name=Science]]]
     Using JPA Query Language:	Book [id=2, title=The big book of something, author=Author [id=1, name=Some Guy], published=Fri Dec 31 16:55:00 CET 2010, tags=[Tag [name=Horror], Tag [name=Drama], Tag [name=Science]]]
 
