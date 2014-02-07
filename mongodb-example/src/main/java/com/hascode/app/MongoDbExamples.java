@@ -27,7 +27,8 @@ public class MongoDbExamples {
 		MongoClient client = MongodForTestsFactory
 				.with(Version.Main.PRODUCTION).newMongo();
 
-		Morphia morphia = new Morphia().map(Book.class);
+		Morphia morphia = new Morphia()
+				.map(Book.class, Author.class, Tag.class);
 
 		Datastore ds = morphia.createDatastore(client, dbName);
 		Calendar cal1 = Calendar.getInstance();
@@ -63,11 +64,11 @@ public class MongoDbExamples {
 
 		QBook book = QBook.book;
 		MorphiaQuery<Book> query = new MorphiaQuery<Book>(morphia, ds, book);
-		Book bookFound = query.where(book.title.startsWith("The"),
-				book.published.after(cal1.getTime()),
-				book.author.name.eq("Some Guy"), book.tags.contains(horrorTag))
-				.uniqueResult(book);
+		Book bookFound = query
+				.where(book.title.startsWith("The"),
+						book.published.after(cal1.getTime()),
+						book.author.name.eq("Some guy"),
+						book.tags.contains(horrorTag)).list().get(0);
 		System.out.println(bookFound.toString());
-
 	}
 }
