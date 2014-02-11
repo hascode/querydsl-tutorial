@@ -1,6 +1,5 @@
 package com.hascode.app;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
@@ -21,15 +20,14 @@ import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.store.Directory;
-import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.Version;
 
 import com.hascode.entity.QBook;
 import com.mysema.query.lucene.LuceneQuery;
+import com.mysema.query.lucene.LuceneSerializer;
 
 public class LuceneExamples {
-	private static final String INDEX = "target/index";
-
 	public void run() throws IOException {
 		Calendar cal1 = Calendar.getInstance();
 		cal1.set(2010, 0, 0);
@@ -37,15 +35,11 @@ public class LuceneExamples {
 		Calendar cal2 = Calendar.getInstance();
 		cal2.set(2011, 0, 0);
 
-		File indexDir = new File(INDEX);
-		indexDir.deleteOnExit();
-
-		Directory index = FSDirectory.open(indexDir);
+		Directory index = new RAMDirectory();
 		Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_46);
 
 		IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_46,
-				analyzer);
-		iwc.setOpenMode(OpenMode.CREATE);
+				analyzer).setOpenMode(OpenMode.CREATE);
 		IndexWriter writer = new IndexWriter(index, iwc);
 
 		createBook(writer, "The big book of something", "Some Guy",
@@ -53,23 +47,21 @@ public class LuceneExamples {
 		writer.commit();
 		writer.close();
 
-		QBook book = new QBook("doc");
+		QBook book = new QBook("book");
 
 		IndexReader reader = DirectoryReader.open(index);
 		System.out.println(reader.numDocs() + " books stored in index");
 		IndexSearcher searcher = new IndexSearcher(reader);
-		LuceneQuery query = new LuceneQuery(searcher);
 
+		LuceneQuery query = new LuceneQuery(new LuceneSerializer(true, true),
+				searcher);
 		System.out.println("Searching a Lucene Index with Querydsl");
-		LuceneQuery q = query.where(book.author.eq("Some Guy")).orderBy(
-				book.title.asc());
-		System.out.println("generated lucene query: " + q.toString());
-		List<Document> documents = q.list();
+		LuceneQuery bookQuery = query.where(book.author.eq("Some Guy"))
+				.orderBy(book.title.asc());
+		System.out.println("generated lucene query: " + bookQuery.toString());
+		List<Document> documents = bookQuery.list();
 
 		System.out.println(documents.size() + " books found");
-		for (Document doc : documents) {
-			System.out.println(doc);
-		}
 	}
 
 	private void createBook(final IndexWriter writer, final String title,
