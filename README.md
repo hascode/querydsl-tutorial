@@ -28,6 +28,15 @@ Run the Lucene examples using the following command:
 
     mvn package && cd lucene-example && mvn -Dexec.mainClass=com.hascode.app.LuceneExamples exec:java
 
+This should produce a similar output:
+
+    4 books stored in index
+    Searching a Lucene Index with Querydsl
+    generated lucene query: +(+(+author:"some guy" +published:{* TO 2011-02-13}) +price:[10.0 TO 30.0]) +title:*something
+    2 books found
+    Document<stored,indexed,tokenized<title:The big book of something> stored,indexed,tokenized<author:Some Guy> stored,indexed,tokenized,omitNorms,indexOptions=DOCS_ONLY<published:2010-01-01> stored<price:20.5>>
+    Document<stored,indexed,tokenized<title:Anything, onething, something> stored,indexed,tokenized<author:Some Guy> stored,indexed,tokenized,omitNorms,indexOptions=DOCS_ONLY<published:2010-01-01> stored<price:29.99>>
+
 
 Please feel free to have a look at my blog at [www.hascode.com] for sources and additional information.
 

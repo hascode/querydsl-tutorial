@@ -1,9 +1,12 @@
 package com.hascode.entity;
 
 import org.apache.lucene.document.Document;
+import org.joda.time.LocalDate;
 
 import com.mysema.query.types.PathMetadataFactory;
+import com.mysema.query.types.path.DatePath;
 import com.mysema.query.types.path.EntityPathBase;
+import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.StringPath;
 
 public class QBook extends EntityPathBase<Document> {
@@ -15,8 +18,8 @@ public class QBook extends EntityPathBase<Document> {
 
 	public final StringPath title = createString("title");
 	public final StringPath author = createString("author");
-	// public final DatePath<Date> published = createDate("published",
-	// Date.class);
-	// public final ArrayPath<String> tags = createArray ("tags", String.class);
+	public final DatePath<LocalDate> published = createDate("published",
+			LocalDate.class);
+	public final NumberPath<Float> price = createNumber("price", Float.class);
 
 }
