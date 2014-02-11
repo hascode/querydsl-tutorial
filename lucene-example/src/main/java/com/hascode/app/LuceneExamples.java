@@ -1,7 +1,6 @@
 package com.hascode.app;
 
 import java.io.IOException;
-import java.util.Calendar;
 import java.util.List;
 
 import org.apache.lucene.analysis.Analyzer;
@@ -28,12 +27,7 @@ import com.mysema.query.lucene.LuceneSerializer;
 
 public class LuceneExamples {
 	public void run() throws IOException {
-		Calendar cal1 = Calendar.getInstance();
-		cal1.set(2010, 2, 1); // 2010-03-01
 		LocalDate date1 = new LocalDate(2010, 1, 1);
-
-		Calendar cal2 = Calendar.getInstance();
-		cal2.set(2011, 1, 13); // 2011-02-13
 		LocalDate date2 = new LocalDate(2011, 2, 13);
 
 		Directory index = new RAMDirectory();
