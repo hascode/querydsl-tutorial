@@ -21,6 +21,10 @@ Run the MongoDB examples using the following command:
 
     mvn package && cd mongodb-example && mvn -Dexec.mainClass=com.hascode.app.MongoDbExamples exec:java
 
+This should produce a similar output (besides the environment's startup output):
+
+    Book [id=52fa7cf10fcee8e5948a548b, title=The big book of something, author=Author [id=52fa7cf10fcee8e5948a5487, name=Some guy], published=Fri Dec 31 20:41:37 CET 2010, tags=[Tag [id=52fa7cf10fcee8e5948a5488, name=Horror], Tag [id=52fa7cf10fcee8e5948a5489, name=Drama], Tag [id=52fa7cf10fcee8e5948a548a, name=Science]]]
+
 
 ## Lucene
 
